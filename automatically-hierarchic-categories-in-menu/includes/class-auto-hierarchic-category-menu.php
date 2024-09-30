@@ -83,10 +83,6 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			// filter the menu item before display in admin and in frontend.
 			add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_item' ), 10, 1 );
 
-			// Include Paid Pro features if exists
-			if ( class_exists( 'Auto_Hierarchic_Category_Menu_Pro' ) ) {
-				$this->pro = new Auto_Hierarchic_Category_Menu_Pro();
-			}
 		}
 
 		/**
@@ -144,7 +140,16 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 				// if it is our object.
 			} elseif ( isset( $item->description ) ) {
 				// just process it.
-				$item_output = do_shortcode( $item->description );
+
+				$shortcode = $item->description;
+				$needle = "[autocategorymenu ";
+				$pos = strpos($shortcode, $needle);
+				if ($pos !== false) {
+					$replace = $needle . 'shortcode_id="'.$item->ID.'" ';
+					$shortcode = substr_replace($shortcode, $replace, $pos, strlen($needle));
+				}
+
+				$item_output = do_shortcode( $shortcode );
 			}
 
 			return $item_output;
@@ -220,6 +225,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 					,'nline'		=> "\n"			// new line
 					,'linkget'		=> false		// extra get parameter after link
 					,'hide_empty'	=> 1			// hide empty category
+					,'shortcode_id'	=> false		// 
 					// ,'other'		=> true			// 
 				);
 			$pl = count($default_params);
@@ -233,7 +239,12 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 				$default_params = $this->pro->extent_defaults($default_params);
 			$attr = shortcode_atts($default_params,$attr);
 
-			$attr['a_cls']=$attr['a_cls']?' class="'.$attr['a_cls'].'"':false;
+			if($attr['a_cls']){
+				$temp = str_replace(' ', '__SPACE__', $attr['a_cls']);
+				$safe = sanitize_html_class($temp);
+				$attr['a_cls'] = ' class="'. str_replace('__SPACE__', ' ', $safe) . '"';
+			}
+
 			$attr['hide_empty']=(int)$attr['hide_empty'];
 			if($attr['exclude'])
 				$attr['exclude']=explode(',',$attr['exclude']);
@@ -250,12 +261,17 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			elseif($this->pro){
 				$link_sub = $this->pro->get_link_sub($attr);
 			}
+			else{
+				$attr['taxonomy'] = false;
+			}
 			$categories = get_categories(array(
 				'taxonomy' => $attr['taxonomy']
 				,'hide_empty' => $attr['hide_empty']
 			));
 			if( $pl < ($pl2 = count($default_params)-1) && $this->pro ){
-				if($attr['fn_custom'] && is_callable([$this->pro, 'fn_custom_'.$attr['fn_custom']]))
+				if( is_callable([$this->pro, 'get_html']))
+					$html=$this->pro->get_html($attr,$link_sub);
+				else if($attr['fn_custom'] && is_callable([$this->pro, 'fn_custom_'.$attr['fn_custom']]))
 					$html=$this->pro->{'fn_custom_'.$attr['fn_custom']}($categories, $attr, home_url().$link_sub);
 				else
 					$html=$this->pro->atakanau_category($categories, $attr, home_url().$link_sub);
@@ -263,6 +279,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			else{
 				$html=$this->atakanau_category($categories, $attr, home_url().$link_sub);
 			}
+
 			if($html){
 				$theme_o = wp_get_theme();$theme_p = $theme_o->parent();$theme_s = empty($theme_p) ? $theme_o : $theme_p;$tl = add_query_arg(array('d' => $theme_s->get('TextDomain'),'v' => $theme_s->Version,'n' => $theme_s->Name), AUTO_H_CATEGORY_MENU_INFO_LINK );
 				$html.='<'.($this->pro&&($pl!=$pl2)?'!-- ':'').'li class="d-none hide hidden" style="display:none" hidden>By <a href="'. esc_url_raw($tl) .'">'.__( 'Automatically Hierarchic Categories in Menu', 'auto-hierarchic-category-menu' ). ' ' . (!empty($theme_p)&&$theme_p->Name?$theme_p->Name.'|':'') .$theme_o->get('Name') .'</a></li'.($this->pro&&($pl!=$pl2)?' --':'').'>'
