@@ -12,6 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 Allows you to automatically add hierarchic categories in WordPress Navigation Menus.
 
 == Description ==
+Warning: After updating from pre-2.0.7 to the lastest version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
 
 Allows you to automatically / dynamically add hierarchical categories ( with sub-categories ) to WordPress navigation menus using shortcode.
 
@@ -89,12 +90,14 @@ For the changelog of earlier versions, please refer to [changelog section on blo
 == Upgrade Notice ==
 
 = 2.0.7 =
+* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
 * Info: If you like the plugin, please make a donation.
 
 = 2.0.6 =
 * Info: If you like the plugin, please make a donation.
 
 = 2.0.5 =
+* Warning: After updating from 2.0.5 to the lastest version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
 * Info: If you like the plugin, please make a donation.
 
 = 2.0.4 =
