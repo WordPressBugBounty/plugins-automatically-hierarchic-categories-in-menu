@@ -5,7 +5,7 @@ Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
 Requires at least: 5.0.2
 Requires PHP: 5.6
 Tested up to: 6.7
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 
@@ -79,15 +79,18 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.7 =
+= Version 2.0.8 =
 * Security: XSS JavaScript inject
-* Extended: PRO version compatibility
 * Tested up to:
-  * `6.6.x`
+  * `6.7.x`
 
 For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=changelog#toc_ahcim-changelog).
 
 == Upgrade Notice ==
+
+= 2.0.8 =
+* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
+* Info: If you like the plugin, please make a donation.
 
 = 2.0.7 =
 * Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.

@@ -1,4 +1,4 @@
-/*! Automatically Hierarchic Categories in Menu v2.0.7 | (c) Atakan Au */
+/*! Automatically Hierarchic Categories in Menu v2.0.8 | (c) Atakan Au */
 jQuery(document).ready(function($){
 	$( '#submit-aau-ahcm' ).on( 'click', function ( e ) {
 		// call registerChange like any add

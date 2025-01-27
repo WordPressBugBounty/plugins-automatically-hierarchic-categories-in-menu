@@ -304,7 +304,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 						$class_chld=array_filter($class_chld,'strlen');
 						$class_chld = implode(' ',$class_chld);
 						$prnt_cls=$params['prnt_cls'] ? $params['prnt_cls'] : false;
-						$link=$slug.'/'.$category->slug.'/'.($params['linkget']?'?'.$params['linkget']:'');
+						$link=$slug.'/'.$category->slug.'/'.($params['linkget']?'?'.esc_attr($params['linkget']):'');
 						$html.= $tab.'<'.$params['chld_tag'].($class_chld ? ' class="' .$class_chld.'"':'').'>'.$params['nline']
 						.( $html_sub && $params['subi_bfr'] ?
 						$tab.$params['subi_bfr'].$params['nline'] : ''
