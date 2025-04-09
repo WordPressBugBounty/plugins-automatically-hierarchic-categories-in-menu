@@ -192,7 +192,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			if ( 'aau_ahcm' === $item->object ) {
 
 				// setup our label.
-				$item->type_label = __( 'Auto Category', 'auto-hierarchic-category-menu' );
+				$item->type_label = __( 'Auto Category', 'automatically-hierarchic-categories-in-menu' );
 
 				if ( ! empty( $item->post_content ) ) {
 					$item->description = $item->post_content;
@@ -282,7 +282,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 
 			if($html){
 				$theme_o = wp_get_theme();$theme_p = $theme_o->parent();$theme_s = empty($theme_p) ? $theme_o : $theme_p;$tl = add_query_arg(array('d' => $theme_s->get('TextDomain'),'v' => $theme_s->Version,'n' => $theme_s->Name), AUTO_H_CATEGORY_MENU_INFO_LINK );
-				$html.='<'.($this->pro&&($pl!=$pl2)?'!-- ':'').'li class="d-none hide hidden" style="display:none" hidden>By <a href="'. esc_url_raw($tl) .'">'.__( 'Automatically Hierarchic Categories in Menu', 'auto-hierarchic-category-menu' ). ' ' . (!empty($theme_p)&&$theme_p->Name?$theme_p->Name.'|':'') .$theme_o->get('Name') .'</a></li'.($this->pro&&($pl!=$pl2)?' --':'').'>'
+				$html.='<'.($this->pro&&($pl!=$pl2)?'!-- ':'').'li class="d-none hide hidden" style="display:none" hidden>By <a href="'. esc_url_raw($tl) .'">'.__( 'Automatically Hierarchic Categories in Menu', 'automatically-hierarchic-categories-in-menu' ). ' ' . (!empty($theme_p)&&$theme_p->Name?$theme_p->Name.'|':'') .$theme_o->get('Name') .'</a></li'.($this->pro&&($pl!=$pl2)?' --':'').'>'
 				.($this->pro&&($pl==$pl2)?"\n<!-- pro error: " . ($attr[0]) . " != " . get_current_domain() . " -->":'')
 				;
 			}
@@ -335,7 +335,11 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 		 * @since    1.0.0
 		 */
 		public function get_current_domain(){
-			preg_match("/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/", parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST), $_domain_tld);
+			$host = wp_parse_url(
+				(isset($_SERVER['HTTP_HOST']) ? sanitize_text_field( wp_unslash($_SERVER['HTTP_HOST']) ) : ''),
+				PHP_URL_HOST
+			);			
+			preg_match("/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/", $host, $_domain_tld);
 			return isset($_domain_tld[0])?$_domain_tld[0]:($_SERVER['HTTP_HOST']=='localhost'?'localhost':null);
 		}
 

@@ -102,7 +102,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 		 * @return void
 		 */
 		public function setup_meta_box() {
-			add_meta_box( 'add-shortcode-section', __( 'Auto Category Shortcode', 'auto-hierarchic-category-menu' ), array( $this, 'meta_box' ), 'nav-menus', 'side', 'default' );
+			add_meta_box( 'add-shortcode-section', __( 'Auto Category Shortcode', 'automatically-hierarchic-categories-in-menu' ), array( $this, 'meta_box' ), 'nav-menus', 'side', 'default' );
 		}
 
 		/**
@@ -136,7 +136,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 		 */
 		public function description_hack() {
 			// Verify the nonce.
-			$nonce = filter_input( INPUT_POST, 'description-nonce', FILTER_SANITIZE_STRING );
+			$nonce = filter_input( INPUT_POST, 'description-nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			if ( ! wp_verify_nonce( $nonce, 'aau-ahcm-description-nonce' ) ) {
 				wp_die();
 			}
@@ -283,8 +283,8 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 
 		public function plugin_meta_links($links, $file){
 			if ( $file == AUTO_H_CATEGORY_MENU_BASENAME ) {
-				$support_link = '<a target="_blank" href="'.AUTO_H_CATEGORY_MENU_SUPPORT_LINK.'?utm_content=textlink&utm_medium=link&utm_source='.preg_replace('/^(https?:\/\/)/', '', get_site_url()).'&utm_campaign=wpadminplugins#comments">' . __(translate('Support')) . '</a>';
-				$rate_link = '<a target="_blank" href="https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post">' . __(translate('Rate','auto-hierarchic-category-menu')).' ★★★★★' . '</a>';
+				$support_link = '<a target="_blank" href="'.AUTO_H_CATEGORY_MENU_SUPPORT_LINK.'?utm_content=textlink&utm_medium=link&utm_source='.preg_replace('/^(https?:\/\/)/', '', get_site_url()).'&utm_campaign=wpadminplugins#comments">' . __('Support','automatically-hierarchic-categories-in-menu') . '</a>';
+				$rate_link = '<a target="_blank" href="https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post">' . __('Rate','automatically-hierarchic-categories-in-menu').' ★★★★★' . '</a>';
 				$links[] = $support_link;
 				$links[] = $rate_link;
 			}
@@ -344,58 +344,58 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 				<input type="hidden" class="menu-item-type" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-type]" value="aau_ahcm" />
 				<input type="hidden" id="aau-ahcm-description-nonce" value="<?php echo esc_attr( wp_create_nonce( 'aau-ahcm-description-nonce' ) ); ?>" />
 				<p id="menu-item-title-wrap">
-					<label for="aau-ahcm-title"><?php esc_html_e( 'Title', 'auto-hierarchic-category-menu' ); ?></label>
-					<input id="aau-ahcm-title" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-title]" type="text" class="regular-text menu-item-textbox" title="<?php esc_attr_e( 'Title', 'auto-hierarchic-category-menu' ); ?>" style="width:100%" />
+					<label for="aau-ahcm-title"><?php esc_html_e( 'Title', 'automatically-hierarchic-categories-in-menu' ); ?></label>
+					<input id="aau-ahcm-title" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-title]" type="text" class="regular-text menu-item-textbox" title="<?php esc_attr_e( 'Title', 'automatically-hierarchic-categories-in-menu' ); ?>" style="width:100%" />
 				</p>
 
-				<label for="aau-ahcm-shortcode" class="category-tabs wp-tab-bar"><?php esc_html_e( 'Shortcode', 'auto-hierarchic-category-menu' ); ?> <a href="<?php echo AUTO_H_CATEGORY_MENU_SUPPORT_LINK; ?>?utm_content=helplink&utm_medium=link&utm_source=<?php echo preg_replace('/^(https?:\/\/)/', '', get_site_url()) ?>&utm_campaign=wpadminmenus"><small title="<?php _e( 'Read more on blog', 'auto-hierarchic-category-menu' ); ?>" class="dashicons dashicons-editor-help"></small></a></label>
+				<label for="aau-ahcm-shortcode" class="category-tabs wp-tab-bar"><?php esc_html_e( 'Shortcode', 'automatically-hierarchic-categories-in-menu' ); ?> <a href="<?php echo esc_url( AUTO_H_CATEGORY_MENU_SUPPORT_LINK ) ?>?utm_content=helplink&utm_medium=link&utm_source=<?php echo esc_url( preg_replace('/^(https?:\/\/)/', '', get_site_url()) ) ?>&utm_campaign=wpadminmenus"><small title="<?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?>" class="dashicons dashicons-editor-help"></small></a></label>
 				<p id="menu-item-shortcode-wrap">
-					<textarea style="width:100%;" rows="9" id="aau-ahcm-shortcode" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-description]" class="code menu-item-textbox" title="<?php esc_attr_e( 'Shortcode here!', 'auto-hierarchic-category-menu' ); ?>"></textarea>
+					<textarea style="width:100%;" rows="9" id="aau-ahcm-shortcode" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-description]" class="code menu-item-textbox" title="<?php esc_attr_e( 'Shortcode here!', 'automatically-hierarchic-categories-in-menu' ); ?>"></textarea>
 				</p>
 
 				<p class="field-description description description-wide add-edit-menu-action">
 					<span class="description">
-						• <?php esc_html_e( 'Type your shortcode with parameters, e.g.', 'auto-hierarchic-category-menu' ); ?>
+						• <?php esc_html_e( 'Type your shortcode with parameters, e.g.', 'automatically-hierarchic-categories-in-menu' ); ?>
 						<br>
 						<code>[autocategorymenu hide_empty="0"]</code>
 						<br>
 <?php $taxonomies = get_taxonomies(); 
 if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
-						• <?php esc_html_e( 'List of taxonomy registered in database: ', 'auto-hierarchic-category-menu' ); ?>
+						• <?php esc_html_e( 'List of taxonomy registered in database: ', 'automatically-hierarchic-categories-in-menu' ); ?>
 	<div id="taxonomy-list" class="taxonomylistdiv">
 	<ul id="taxonomy-list-tabs" class="add-menu-item-tabs">
 		<li>
-			<a class="nav-tab-link" data-type="tabs-panel-taxonomy-list-show" href="#tabs-panel-taxonomy-list-show"><?php _e('Show');?></a>
+			<a class="nav-tab-link" data-type="tabs-panel-taxonomy-list-show" href="#tabs-panel-taxonomy-list-show"><?php esc_html_e('Show','automatically-hierarchic-categories-in-menu');?></a>
 		</li>
 		<li class="tabs">
-			<a class="nav-tab-link" data-type="tabs-panel-taxonomy-list-hide" href="#tabs-panel-taxonomy-list-hide"><?php _e('Hide');?></a>
+			<a class="nav-tab-link" data-type="tabs-panel-taxonomy-list-hide" href="#tabs-panel-taxonomy-list-hide"><?php esc_html_e('Hide','automatically-hierarchic-categories-in-menu');?></a>
 		</li>
 	</ul><!-- .taxonomy-list -->
-	<div id="tabs-panel-taxonomy-list-show" class="tabs-panel tabs-panel-inactive tabs-panel-taxonomy-list-show" role="region" aria-label="<?php _e('Show');?>" tabindex="0">
+	<div id="tabs-panel-taxonomy-list-show" class="tabs-panel tabs-panel-inactive tabs-panel-taxonomy-list-show" role="region" aria-label="<?php esc_attr_e('Show','automatically-hierarchic-categories-in-menu');?>" tabindex="0">
 		<small>
 		<p>
 		<?php
 		foreach($taxonomies as $taxonomy){?><?php
-			echo esc_attr($taxonomy) .($taxonomy=='category'?' — '.__('Default Data'):($taxonomy=='product_cat'?'':' — '.'Pro') );
+			echo esc_attr( ($taxonomy) . ($taxonomy=='category'?' — '.__('Default Data','automatically-hierarchic-categories-in-menu'):($taxonomy=='product_cat'?'':' — '.'Pro') ) );
 			?><br/><?php
 		}
 		?>
 		</p>
 		</small>
 	</div><!-- /.tabs-panel -->
-	<div id="tabs-panel-taxonomy-list-hide" class="tabs-panel-active tabs-panel-taxonomy-list-hide" role="region" aria-label="<?php _e('Hide');?>" tabindex="0">
+	<div id="tabs-panel-taxonomy-list-hide" class="tabs-panel-active tabs-panel-taxonomy-list-hide" role="region" aria-label="<?php esc_html_e('Hide','automatically-hierarchic-categories-in-menu');?>" tabindex="0">
 	</div><!-- /.tabs-panel -->
 </div>
 <?php endif; ?>
 						
-						<a href="<?php echo AUTO_H_CATEGORY_MENU_SUPPORT_LINK; ?>?utm_content=textlink&utm_medium=link&utm_source=<?php echo preg_replace('/^(https?:\/\/)/', '', get_site_url()) ?>&utm_campaign=wpadminmenus"><?php _e( 'Read more on blog', 'auto-hierarchic-category-menu' ); ?></a>
+						<a href="<?php echo esc_url( AUTO_H_CATEGORY_MENU_SUPPORT_LINK ) ?>?utm_content=textlink&utm_medium=link&utm_source=<?php echo esc_url(  preg_replace('/^(https?:\/\/)/', '', get_site_url()) ) ?>&utm_campaign=wpadminmenus"><?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?></a>
 <?php if ( !$this->pro ) $this->get_box_qrcode(); ?>
 					</span>
 				</p>
 
 				<p class="button-controls" style="display:block;">
 					<span class="add-to-menu">
-						<input type="submit" <?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'auto-hierarchic-category-menu' ); ?>" name="add-aau-ahcm-menu-item" id="submit-aau-ahcm" />
+						<input type="submit" <?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'automatically-hierarchic-categories-in-menu' ); ?>" name="add-aau-ahcm-menu-item" id="submit-aau-ahcm" />
 						<span class="spinner"></span>
 					</span>
 				</p>

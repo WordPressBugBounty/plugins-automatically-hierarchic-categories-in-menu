@@ -4,8 +4,8 @@ Author link: https://atakanau.blogspot.com
 Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
 Requires at least: 5.0.2
 Requires PHP: 5.6
-Tested up to: 6.7
-Stable tag: 2.0.8
+Tested up to: 6.8
+Stable tag: 2.0.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 
@@ -18,7 +18,7 @@ Allows you to automatically / dynamically add hierarchical categories ( with sub
 
 HTML and CSS knowledge may be required depending on the theme.
 
-[Visit my blog for support request and feedback.](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=description)
+[Visit my blog for support request and feedback.](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=ahcim-description)
 
 Please [comment](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html#comments) 💬, [rate](https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post) ⭐ and share 👍
 > ↪ [Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A//atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html)
@@ -30,24 +30,6 @@ Please [comment](https://atakanau.blogspot.com/2021/01/automatic-category-menu-w
 
 https://www.youtube.com/watch?v=kcRMB2sS1tk
 
-🪙 Scan via [Binance App](https://accounts.binance.com/en/register?ref=319392384) to send donation:
-▄▄▄▄▄▄▄░░░▄░▄░░░▄░░░░▄░▄▄░▄▄▄▄▄▄▄
-█░▄▄▄░█░▀░▀░▄█▄▀▄▀▄█▀░░▄░░█░▄▄▄░█
-█░███░█░▀█▀░▀░░█▀░░░█▄█░▄░█░███░█
-█▄▄▄▄▄█░█▀▄▀█▀▄░█▀█░█░█░▄░█▄▄▄▄▄█
-▄▄▄▄▄░▄▄▄█▀█░░█▄▄░░▀░█▄▀░▄░▄░▄░▄░
-▀▀▀▀▀░▄░█░█░▀▄░█░▄▀░█▀▄█▄█░███▀▄░
-▄▀░█░█▄░░▄▄░█▄█▄▀▄█▀▄█▀▀▀▄█▄▄░██▀
-█░▄░░░▄▀▄█░▄▄▄▄▄▀▄▀▀▄▀▄▄▄▄▀█▄█▀▄░
-█▄░█▄█▄▀▀▄░█░░▄▄▀▄█▀░▄▄▀░░▀▄▄▄▀█▀
-░▄██░█▄█░▀▄░▀▄░██▄█░█▀▄█▄█░▄█▄▀░▄
-█▀░░▄░▄██▄█░█▀▀▄▄▄▄▀░░░▀░▄██░░░▄▀
-█░░▄▀█▄▄▀▄░▄▄░░█▄▄▀░▄▀█▀█▄▀▀▄░▀██
-█░█▀░█▄█▄▀▄█░░░▄▄░█▀▄▀░▀▄▄█▄▄█░▀▀
-▄▄▄▄▄▄▄░█▀▄░▀█▄▄░▄▄░█▀░▄█░▄░█░▀▄░
-█░▄▄▄░█░▄░▀░█▀▄▄▀░▄▀░████▄▄▄██░░█
-█░███░█░█░█▄▄░░▀▄▄░▀▄▀▀░▄▄▄█░▀▀▀░
-█▄▄▄▄▄█░█░░█░░▀▄░░▀▀▄▄▀██▀▄░▀▄██▀
 
 == Installation ==
 
@@ -79,14 +61,18 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.8 =
-* Security: XSS JavaScript inject
+= Version 2.0.9 =
+* (Minor) Source code upgraded for PHP 8.X
 * Tested up to:
-  * `6.7.x`
+  * `6.8.x`
 
-For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=changelog#toc_ahcim-changelog).
+For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=ahcim-changelog#toc_ahcim-changelog).
 
 == Upgrade Notice ==
+
+= 2.0.9 =
+* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
+* Info: If you like the plugin, please make a donation.
 
 = 2.0.8 =
 * Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
