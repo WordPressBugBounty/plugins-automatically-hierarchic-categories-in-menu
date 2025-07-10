@@ -208,7 +208,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			return $item;
 		}
 
-		function atakanau_autocategorymenu( $attr ) {
+		public function atakanau_autocategorymenu( $attr ) {
 			$default_params=array(
 					 'taxonomy'		=> 'category'	// taxonomy type
 					,'exclude'		=> false		// exclude taxonomy id(s)
@@ -216,7 +216,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 					,'prnt_tag'		=> 'ul'			// parent tag, dom name
 					,'prnt_cls'		=> 'sub-menu'	// parent tag, class
 					,'chld_tag'		=> 'li'			// child tag, dom name
-					,'chld_cls'		=> 'menu-item'	// child tag, 
+					,'chld_cls'		=> 'menu-item'	// child tag, class
 					,'chld_chc'		=> 'menu-item-has-children'	// child tag, has children class
 					,'chld_cid'		=> false		// add id to class
 					,'a_cls'		=> false		// default link class
@@ -289,44 +289,234 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			return $html;
 
 		}
-		function atakanau_category($array,$params=array(),$slug='',$parent=0,$level=0){
+		public function atakanau_category($array,$params=array(),$slug='',$parent=0,$level=0){
 			$html='';
 			$tab=$params['nline']==''?'':str_repeat("\t", $level);
+
+			$allowed_html = array(
+				'div' => array(
+					'class' => array(),
+					'style' => array(),
+					'title' => array(),
+				),
+				'span' => array(
+					'class' => array(),
+					'style' => array(),
+					'title' => array(),
+				),
+				'a' => array(
+					'href' => array(),
+					'class' => array(),
+					'title' => array(),
+					'target' => array(),
+					'rel' => array(),
+				),
+				'i' => array(
+					'class' => array(),
+					'style' => array(),
+					'aria-hidden' => array(),
+					'role' => array(),
+				),
+				'svg' => array(
+					'class' => array(),
+					'width' => array(),
+					'height' => array(),
+					'viewbox' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+					'xmlns' => array(),
+					'preserveaspectratio' => array(),
+				),
+				'path' => array(
+					'd' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'circle' => array(
+					'cx' => array(),
+					'cy' => array(),
+					'r' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'rect' => array(
+					'x' => array(),
+					'y' => array(),
+					'width' => array(),
+					'height' => array(),
+					'rx' => array(),
+					'ry' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'line' => array(
+					'x1' => array(),
+					'y1' => array(),
+					'x2' => array(),
+					'y2' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'polyline' => array(
+					'points' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'polygon' => array(
+					'points' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'ellipse' => array(
+					'cx' => array(),
+					'cy' => array(),
+					'rx' => array(),
+					'ry' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'stroke-linecap' => array(),
+					'stroke-linejoin' => array(),
+				),
+				'g' => array(
+					'class' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+					'transform' => array(),
+				),
+				'text' => array(
+					'x' => array(),
+					'y' => array(),
+					'dx' => array(),
+					'dy' => array(),
+					'font-size' => array(),
+					'font-family' => array(),
+					'text-anchor' => array(),
+					'fill' => array(),
+					'stroke' => array(),
+					'stroke-width' => array(),
+				),
+				'image' => array(
+					'xlink:href' => array(),
+					'x' => array(),
+					'y' => array(),
+					'width' => array(),
+					'height' => array(),
+					'preserveaspectratio' => array(),
+				),
+				'img' => array(
+					'src' => array(),
+					'alt' => array(),
+					'class' => array(),
+					'style' => array(),
+					'width' => array(),
+					'height' => array(),
+					'loading' => array(),
+				),
+				'strong' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'em' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'b' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'i' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'p' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'ul' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'li' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+				'br' => array(),
+				'hr' => array(
+					'class' => array(),
+					'style' => array(),
+				),
+			);
+			$chld_cls = $params['chld_cls'] ? $this->safe_class_name($params['chld_cls']) : '';
+			$chld_chc = $params['chld_chc'] ? $this->safe_class_name($params['chld_chc']) : '' ;
+			$prnt_cls = $params['prnt_cls'] ? $this->safe_class_name($params['prnt_cls']) : false;
+			$subi_bfr = $params['subi_bfr'] ? wp_kses($params['subi_bfr'], $allowed_html) : '';
+			$subi_aft = $params['subi_aft'] ? wp_kses($params['subi_aft'], $allowed_html) : '';
+			$chld_tag = $params['chld_tag'] ? preg_replace( '/[^a-zA-Z]/', '', esc_attr($params['chld_tag']) ) : '';
+			$prnt_tag = $params['prnt_tag'] ? preg_replace( '/[^a-zA-Z]/', '', esc_attr($params['prnt_tag']) ) : '';
+
 			foreach( $array as $category ){
 				if( $category->parent == $parent ){
 					if( !$params['exclude'] || !in_array( $category->term_id, $params['exclude']) ){
 						$html_sub=!$params['level']||$level+1<$params['level']?$this->atakanau_category($array,$params,$slug.'/'.$category->slug,$category->term_id,$level+1):false;
+
 						$class_chld=array(
-								 ( $params['chld_cls'] ? $params['chld_cls'] : '' )
-								,( $html_sub && $params['chld_cls'] ? $params['chld_chc'] : '' )
+								 ( $chld_cls )
+								,( $html_sub ? $chld_chc : '' )
 								,( $params['chld_cid'] ? 'menu-item-'.$category->term_id : '' )
 							);
 						$class_chld=array_filter($class_chld,'strlen');
 						$class_chld = implode(' ',$class_chld);
-						$prnt_cls=$params['prnt_cls'] ? $params['prnt_cls'] : false;
 						$link=$slug.'/'.$category->slug.'/'.($params['linkget']?'?'.esc_attr($params['linkget']):'');
-						$html.= $tab.'<'.$params['chld_tag'].($class_chld ? ' class="' .$class_chld.'"':'').'>'.$params['nline']
-						.( $html_sub && $params['subi_bfr'] ?
-						$tab.$params['subi_bfr'].$params['nline'] : ''
+						$html.= $tab.'<'.$chld_tag.($class_chld ? ' class="' .$class_chld.'"':'').'>'.$params['nline']
+						.( $html_sub && $subi_bfr ?
+						$tab.$subi_bfr.$params['nline'] : ''
 						)
 						.$tab.'<a'.$params['a_cls'].' href="'.$link.'">'.$params['nline']
 							.$tab.$category->cat_name.$params['nline']
 							.$tab.'</a>'.$params['nline']
-							.( $html_sub && $params['subi_aft'] ?
-							$tab.$params['subi_aft'].$params['nline'] : ''
+							.( $html_sub && $subi_aft ?
+							$tab.$subi_aft.$params['nline'] : ''
 							)
 							.
 							( $html_sub ?
-							$tab.'<'.$params['prnt_tag'].($prnt_cls?' class="'.$prnt_cls.'"':'').'>'.$params['nline']
-								.$tab.$html_sub.$params['nline']
-								.$tab.'</'.$params['prnt_tag'].'>'.$params['nline']
+							$tab.'<'.$prnt_tag.($prnt_cls?' class="'.$prnt_cls.'"':'').'>'.$params['nline']
+								.$html_sub
+								.$tab.'</'.$prnt_tag.'>'.$params['nline']
 								:''
 								)
-								.$tab.'</'.$params['chld_tag'].'>'.$params['nline'];
+								.$tab.'</'.$chld_tag.'>'.$params['nline'];
 					}
 				}
 			}
 			return $html;
+		}
+		public function safe_class_name($str){
+			$temp = str_replace(' ', '__SPACE__', $str);
+			$safe = sanitize_html_class($temp);
+			return str_replace('__SPACE__', ' ', $safe);
 		}
 
 		/**

@@ -167,7 +167,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 			if ( current_user_can( 'activate_plugins' ) ) {
 				// Conditionally adding the function for database context for.
 				add_filter( 'clean_url', array( $this, 'save_shortcode' ), 99, 3 );
-			add_filter('plugin_row_meta', array($this, 'plugin_meta_links'), 10, 2);
+				add_filter('plugin_row_meta', array($this, 'plugin_meta_links'), 10, 2);
 			}
 		}
 
@@ -407,8 +407,13 @@ if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
 			</div>
 			<?php
 		}
-		public function get_box_qrcode() {?><br/><br/><div class="attention alignleft  comment-ays">
+		public function get_box_qrcode() {?><br/>
 <!-- If you like the plugin, please make a donation, no cracking! -->
+<a target="_blank" href="https://buymeacoffee.com/atakanau">
+<img src="<?php echo esc_url( plugin_dir_url(__FILE__) . 'img/bmc_qr.svg' ); ?>" alt="buymeacoffee donate qr" style="width: 100%;">
+<img src="https://media.giphy.com/media/o7RZbs4KAA6tvM4H6j/giphy.gif" alt="buymeacoffee donate link" style="width: 100%;background-color: black;">
+</a>
+<br/><div class="attention alignleft comment-ays">
 <pre style="line-height: 1.1;"><code style="background-color: initial;">Scan via <a href="https://accounts.binance.com/en/register?ref=319392384">Binance App</a> for donation: 
  ▄▄▄▄▄▄▄   ▄ ▄   ▄    ▄ ▄▄ ▄▄▄▄▄▄▄
  █ ▄▄▄ █ ▀ ▀ ▄█▄▀▄▀▄█▀  ▄  █ ▄▄▄ █

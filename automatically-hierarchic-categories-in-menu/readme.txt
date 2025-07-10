@@ -5,9 +5,10 @@ Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
 Requires at least: 5.0.2
 Requires PHP: 5.6
 Tested up to: 6.8
-Stable tag: 2.0.9
+Stable tag: 2.0.10
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
+Donate link: https://buymeacoffee.com/atakanau
 
 Allows you to automatically add hierarchic categories in WordPress Navigation Menus.
 
@@ -61,14 +62,17 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.9 =
-* (Minor) Source code upgraded for PHP 8.X
-* Tested up to:
-  * `6.8.x`
+= Version 2.0.10 =
+* Parameter values escaped.
 
 For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=ahcim-changelog#toc_ahcim-changelog).
 
 == Upgrade Notice ==
+
+= 2.0.10 =
+* Warning: Since parameter values ​​are escaped with version 2.0.10, your menu may be affected; if so, you can report it on the support page for a solution.
+* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
+* Info: If you like the plugin, please make a donation.
 
 = 2.0.9 =
 * Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
