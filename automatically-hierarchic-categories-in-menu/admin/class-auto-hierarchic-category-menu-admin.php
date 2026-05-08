@@ -52,6 +52,15 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 			// Calling parent class' constructor.
 			parent::__construct();
 
+			// Hook to display the Lite Extension admin notice.
+			add_action( 'admin_notices', array( $this, 'aau_ahcm_display_lite_extension_notice' ) );
+
+			global $wp_version;
+			if (version_compare($wp_version, implode('.', [7, 0]), '>')) {
+				add_action('admin_notices', [$this, 'unsupported_v_notice']);
+				return;
+			}
+
 			// Setup the meta box.
 			add_action( 'admin_init', array( $this, 'setup_meta_box' ) );
 
@@ -66,6 +75,9 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 
 			// Hijack the ajax_add_menu_item function in order to save Shortcode menu item properly.
 			add_action( 'wp_ajax_add-menu-item', array( $this, 'ajax_add_menu_item' ), 0 );
+
+			// Hook to handle the dismissal of the Lite Extension admin notice.
+			add_action( 'wp_ajax_aau_ahcm_dismiss_lite_notice', array( $this, 'aau_ahcm_dismiss_lite_notice' ) );
 
 			// Include Paid Pro features if exists
 			if ( class_exists( 'Auto_Hierarchic_Category_Menu_Pro' ) ) {
@@ -145,6 +157,10 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 			// phpcs:ignore WordPressVIPMinimum.Security.PHPFilterFunctions.RestrictedFilter
 			$item = filter_input( INPUT_POST, 'menu-item', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 
+			if ( ! is_array( $item ) ) {
+				wp_die();
+			}
+
 			// Save the description in a transient. This is what we'll use in setup_item().
 			set_transient( 'aau_ahcm_description_hack_' . $item['menu-item-object-id'], $item['menu-item-description'] );
 
@@ -197,6 +213,9 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 			// Get the menu item. We need this unfiltered, so using FILTER_UNSAFE_RAW.
 			// phpcs:ignore WordPressVIPMinimum.Security.PHPFilterFunctions.RestrictedFilter
 			$menu_item = filter_input( INPUT_POST, 'menu-item', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+			if ( ! is_array( $menu_item ) ) {
+				wp_die( 0 );
+			}
 			foreach ( $menu_item as $menu_item_data ) {
 				if (
 				! empty( $menu_item_data['menu-item-type'] ) &&
@@ -283,10 +302,12 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 
 		public function plugin_meta_links($links, $file){
 			if ( $file == AUTO_H_CATEGORY_MENU_BASENAME ) {
-				$support_link = '<a target="_blank" href="'.AUTO_H_CATEGORY_MENU_SUPPORT_LINK.'?utm_content=textlink&utm_medium=link&utm_source='.preg_replace('/^(https?:\/\/)/', '', get_site_url()).'&utm_campaign=wpadminplugins#comments">' . __('Support','automatically-hierarchic-categories-in-menu') . '</a>';
-				$rate_link = '<a target="_blank" href="https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post">' . __('Rate','automatically-hierarchic-categories-in-menu').' ★★★★★' . '</a>';
+				$support_link = '<a target="_blank" href="' . esc_url( $this->get_utm_link( AUTO_H_CATEGORY_MENU_SUPPORT_LINK . '#comments', 'plugins-list', 'ahcim', 'support-link' ) ) . '">' . __( 'Support', 'automatically-hierarchic-categories-in-menu' ) . '</a>';
+				$rate_link = '<a target="_blank" href="https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post">' . __('Rate','automatically-hierarchic-categories-in-menu').' &#9733;&#9733;&#9733;&#9733;&#9733;' . '</a>';
+				$donate_link = '<a target="_blank" href="https://buymeacoffee.com/atakanau">&#10084; ' . __('Donate','automatically-hierarchic-categories-in-menu').'</a>';
 				$links[] = $support_link;
 				$links[] = $rate_link;
+				$links[] = $donate_link;
 			}
 			return $links;
 		}
@@ -348,7 +369,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 					<input id="aau-ahcm-title" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-title]" type="text" class="regular-text menu-item-textbox" title="<?php esc_attr_e( 'Title', 'automatically-hierarchic-categories-in-menu' ); ?>" style="width:100%" />
 				</p>
 
-				<label for="aau-ahcm-shortcode" class="category-tabs wp-tab-bar"><?php esc_html_e( 'Shortcode', 'automatically-hierarchic-categories-in-menu' ); ?> <a href="<?php echo esc_url( AUTO_H_CATEGORY_MENU_SUPPORT_LINK ) ?>?utm_content=helplink&utm_medium=link&utm_source=<?php echo esc_url( preg_replace('/^(https?:\/\/)/', '', get_site_url()) ) ?>&utm_campaign=wpadminmenus"><small title="<?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?>" class="dashicons dashicons-editor-help"></small></a></label>
+				<label for="aau-ahcm-shortcode" class="category-tabs wp-tab-bar"><?php esc_html_e( 'Shortcode', 'automatically-hierarchic-categories-in-menu' ); ?> <a href="<?php echo esc_url( $this->get_utm_link( AUTO_H_CATEGORY_MENU_SUPPORT_LINK, 'nav-menus', 'ahcim', 'shortcode-help-icon' ) ); ?>"><small title="<?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?>" class="dashicons dashicons-editor-help"></small></a></label>
 				<p id="menu-item-shortcode-wrap">
 					<textarea style="width:100%;" rows="9" id="aau-ahcm-shortcode" name="menu-item[<?php echo esc_attr( $nav_menu_placeholder ); ?>][menu-item-description]" class="code menu-item-textbox" title="<?php esc_attr_e( 'Shortcode here!', 'automatically-hierarchic-categories-in-menu' ); ?>"></textarea>
 				</p>
@@ -388,7 +409,7 @@ if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
 </div>
 <?php endif; ?>
 						
-						<a href="<?php echo esc_url( AUTO_H_CATEGORY_MENU_SUPPORT_LINK ) ?>?utm_content=textlink&utm_medium=link&utm_source=<?php echo esc_url(  preg_replace('/^(https?:\/\/)/', '', get_site_url()) ) ?>&utm_campaign=wpadminmenus"><?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?></a>
+						<a href="<?php echo esc_url( $this->get_utm_link( AUTO_H_CATEGORY_MENU_SUPPORT_LINK, 'nav-menus', 'ahcim', 'read-more-link' ) ); ?>"><?php esc_html_e( 'Read more on blog', 'automatically-hierarchic-categories-in-menu' ); ?></a>
 <?php if ( !$this->pro ) $this->get_box_qrcode(); ?>
 					</span>
 				</p>
@@ -406,6 +427,123 @@ if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
 
 			</div>
 			<?php
+		}
+
+		/**
+		 * Displays a notice advising users to install the Lite Extension.
+		 *
+		 * @since 2.0.11
+		 */
+		public function aau_ahcm_display_lite_extension_notice() {
+			// Only show to admins
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+
+			// Check if the user has already dismissed it for the current version.
+			$user_id           = get_current_user_id();
+			$dismissed_version = get_user_meta( $user_id, 'aau_ahcm_dismissed_lite_notice', true );
+			$current_version   = AUTO_H_CATEGORY_MENU_RES;
+
+			if ( $dismissed_version && version_compare( $dismissed_version, $current_version, '>=' ) ) {
+				return;
+			}
+
+			// Check if the helper plugin is already active
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			
+			if ( is_plugin_active( 'automatically-hierarchic-categories-lite/automatically-hierarchic-categories-lite.php' ) ||
+				is_plugin_active( 'auto-hierarchic-category-menu-pro/auto-hierarchic-category-menu-pro.php' )
+			) {
+				return;
+			}
+
+			$download_url = $this->get_utm_link( 'https://buymeacoffee.com/atakanau/ahc-lite-extension-v1-0-0', 'admin-notice', 'ahcim', 'lite-extension-notice' );
+			$nonce = wp_create_nonce( 'aau_ahcm_dismiss_lite_notice_nonce' );
+
+			?>
+			<div class="notice notice-info is-dismissible aau-ahcm-lite-notice" data-nonce="<?php echo esc_attr( $nonce ); ?>">
+				<p>
+					<?php
+					printf(
+						/* translators: %s: URL to download the helper plugin */
+						wp_kses_post( __( '<strong>Preparation for upcoming version:</strong> To ensure a smooth transition and maintain full functionality in the next update, we recommend installing the <a href="%s" target="_blank" rel="noopener noreferrer">Automatically Hierarchic Categories - Lite Extension</a>. This is an optional but recommended step.', 'automatically-hierarchic-categories-in-menu' ) ),
+						esc_url( $download_url )
+					);
+					?>
+				</p>
+			</div>
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
+					var notices = document.querySelectorAll('.aau-ahcm-lite-notice');
+					notices.forEach(function(notice) {
+						notice.addEventListener('click', function(event) {
+							if (event.target.classList.contains('notice-dismiss')) {
+								var nonce = notice.getAttribute('data-nonce');
+								var data = new URLSearchParams();
+								data.append('action', 'aau_ahcm_dismiss_lite_notice');
+								data.append('_ajax_nonce', nonce);
+
+								fetch(ajaxurl, {
+									method: 'POST',
+									body: data,
+									headers: {
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+								});
+							}
+						});
+					});
+				});
+			</script>
+			<?php
+		}
+
+		public function unsupported_v_notice() {
+			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . AUTO_H_CATEGORY_MENU_BASENAME );
+			$plugin_name = $plugin_data['Name'];
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php _e('This plugin is not compatible with your WordPress version, please update the plugin:', 'plugin-name'); ?>
+					<b>"<?php _e($plugin_name, 'plugin-name'); ?>"</b>
+				</p>
+			</div>
+			<?php
+		}
+
+		/**
+		 * AJAX handler for dismissing the Lite Extension notice.
+		 *
+		 * @since 2.0.11
+		 */
+		public function aau_ahcm_dismiss_lite_notice() {
+			check_ajax_referer( 'aau_ahcm_dismiss_lite_notice_nonce' );
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( 'Forbidden', 403 );
+			}
+
+			$user_id = get_current_user_id();
+			update_user_meta( $user_id, 'aau_ahcm_dismissed_lite_notice', AUTO_H_CATEGORY_MENU_RES );
+
+			wp_send_json_success();
+		}
+
+		private function get_utm_link( $base_url = '', $medium = '', $campaign = 'ahcim', $content = '' ) {
+			if ( empty( $base_url ) ) {
+				$base_url = get_site_url();
+			}
+			$source = preg_replace( '/^(https?:\/\/)/', '', get_site_url() );
+			$query_args = array(
+				'utm_source'   => $source,
+				'utm_medium'   => $medium,
+				'utm_campaign' => $campaign,
+				'utm_content'  => $content,
+			);
+			return add_query_arg( $query_args, $base_url );
 		}
 		public function get_box_qrcode() {?><br/>
 <!-- If you like the plugin, please make a donation, no cracking! -->

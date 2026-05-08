@@ -1,11 +1,8 @@
 === Automatically Hierarchic Categories in Menu ===
 Contributors: atakanau
-Author link: https://atakanau.blogspot.com
 Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
-Requires at least: 5.0.2
-Requires PHP: 5.6
-Tested up to: 6.8
-Stable tag: 2.0.10
+Tested up to: 6.9
+Stable tag: 2.0.11
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 Donate link: https://buymeacoffee.com/atakanau
@@ -19,7 +16,7 @@ Allows you to automatically / dynamically add hierarchical categories ( with sub
 
 HTML and CSS knowledge may be required depending on the theme.
 
-[Visit my blog for support request and feedback.](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=ahcim-description)
+Visit my blog for support request and feedback. [Automatically Hierarchic Categories in Menu](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_source=wordpress.org&utm_medium=readme&utm_campaign=ahcim-plugin&utm_content=support-link)
 
 Please [comment](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html#comments) 💬, [rate](https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/?filter=5#new-post) ⭐ and share 👍
 > ↪ [Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A//atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html)
@@ -62,43 +59,28 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.10 =
-* Parameter values escaped.
+= Version 2.0.11 =
+* (Minor) Source code upgraded for PHP 8.X
+* Modified: Info content
+* Tested up to:
+  * `6.9`
 
-For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_content=textlink&utm_medium=link&utm_source=wporg&utm_campaign=ahcim-changelog#toc_ahcim-changelog).
+For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_source=wordpress.org&utm_medium=readme&utm_campaign=ahcim-plugin&utm_content=changelog-link#toc_ahcim-changelog).
 
 == Upgrade Notice ==
 
-= 2.0.10 =
-* Warning: Since parameter values ​​are escaped with version 2.0.10, your menu may be affected; if so, you can report it on the support page for a solution.
+= 2.0.11 =
+* Warning: Starting with version 2.0.10, parameter values are escaped. This may affect your menu. If you experience issues, please report them on the support page for a solution.
 * Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
+* Info: Install the Lite Extension for full compatibility with upcoming features. Optional but suggested.
 * Info: If you like the plugin, please make a donation.
 
-= 2.0.9 =
-* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
-* Info: If you like the plugin, please make a donation.
+== Support ==
 
-= 2.0.8 =
-* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
-* Info: If you like the plugin, please make a donation.
+Support requests, bug reports, feedback, and feature requests can be submitted via the support forum or the plugin's blog page.
 
-= 2.0.7 =
-* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
-* Info: If you like the plugin, please make a donation.
+If you find the plugin useful, please consider leaving a [5-star review](https://wordpress.org/support/plugin/automatically-hierarchic-categories-in-menu/reviews/). You can also support my work with a [donation](https://buymeacoffee.com/atakanau).
 
-= 2.0.6 =
-* Info: If you like the plugin, please make a donation.
+== Collaboration ==
 
-= 2.0.5 =
-* Warning: After updating from 2.0.5 to the lastest version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
-* Info: If you like the plugin, please make a donation.
-
-= 2.0.4 =
-* Info: If you like the plugin, please make a donation.
-
-= 2.0.3 =
-* Info: If you like the plugin, please make a donation.
-
-= 2.0.2 =
-* Info: If you like the plugin, please make a donation or buy Pro version.
-
+I am a freelance developer available for custom development, integrations, and technical consulting. If you have a project related to this plugin, feel free to get in touch.

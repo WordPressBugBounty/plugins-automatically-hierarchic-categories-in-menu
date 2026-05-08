@@ -98,9 +98,9 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 		 */
 		public function has_shortcode( $content ) {
 
-			if ( false !== strpos( $content, '[' ) ) {
+			if ( false !== strpos( (string) $content, '[' ) ) {
 
-				preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
+				preg_match_all( '/' . get_shortcode_regex() . '/s', (string) $content, $matches, PREG_SET_ORDER );
 
 				if ( ! empty( $matches ) ) {
 					return true;
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			} elseif ( isset( $item->description ) ) {
 				// just process it.
 
-				$shortcode = $item->description;
+				$shortcode = (string) $item->description;
 				$needle = "[autocategorymenu ";
 				$pos = strpos($shortcode, $needle);
 				if ($pos !== false) {
@@ -271,7 +271,7 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			if( $pl < ($pl2 = count($default_params)-1) && $this->pro ){
 				if( is_callable([$this->pro, 'get_html']))
 					$html=$this->pro->get_html($attr,$link_sub);
-				else if($attr['fn_custom'] && is_callable([$this->pro, 'fn_custom_'.$attr['fn_custom']]))
+				else if(!empty($attr['fn_custom']) && is_callable([$this->pro, 'fn_custom_'.$attr['fn_custom']]))
 					$html=$this->pro->{'fn_custom_'.$attr['fn_custom']}($categories, $attr, home_url().$link_sub);
 				else
 					$html=$this->pro->atakanau_category($categories, $attr, home_url().$link_sub);
@@ -280,14 +280,40 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 				$html=$this->atakanau_category($categories, $attr, home_url().$link_sub);
 			}
 
-			if($html){
-				$theme_o = wp_get_theme();$theme_p = $theme_o->parent();$theme_s = empty($theme_p) ? $theme_o : $theme_p;$tl = add_query_arg(array('d' => $theme_s->get('TextDomain'),'v' => $theme_s->Version,'n' => $theme_s->Name), AUTO_H_CATEGORY_MENU_INFO_LINK );
-				$html.='<'.($this->pro&&($pl!=$pl2)?'!-- ':'').'li class="d-none hide hidden" style="display:none" hidden>By <a href="'. esc_url_raw($tl) .'">'.__( 'Automatically Hierarchic Categories in Menu', 'automatically-hierarchic-categories-in-menu' ). ' ' . (!empty($theme_p)&&$theme_p->Name?$theme_p->Name.'|':'') .$theme_o->get('Name') .'</a></li'.($this->pro&&($pl!=$pl2)?' --':'').'>'
-				.($this->pro&&($pl==$pl2)?"\n<!-- pro error: " . ($attr[0]) . " != " . get_current_domain() . " -->":'')
-				;
+			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . AUTO_H_CATEGORY_MENU_BASENAME );
+			$active_theme = wp_get_theme();
+			$theme_name = $active_theme->get('Name');
+			$theme_slug = $active_theme->get_stylesheet();
+			$credits_format = '%s - ' . __('Version','automatically-hierarchic-categories-in-menu') . ' %s | ' . __('Author','automatically-hierarchic-categories-in-menu') . ': %s | ' . __('Docs','automatically-hierarchic-categories-in-menu') . ': %s | ' . __('Active Theme','automatically-hierarchic-categories-in-menu') . ': %s (%s)';
+			$credits_args = array(esc_html($plugin_data['Name']),esc_html($plugin_data['Version']),esc_html(strip_tags($plugin_data['Author'])),esc_url($plugin_data['PluginURI']),esc_html($theme_name),esc_html($theme_slug));
+			if ($parent = $active_theme->parent()) {
+				$parent_theme = $parent->get('Name');
+				$parent_theme_slug = $parent->get_template();
+				$credits_format .= ' | ' . __('Parent Theme') . ': %s (%s)';
+				$credits_args[] = esc_html($parent_theme);
+				$credits_args[] = esc_html($parent_theme_slug);
 			}
-			return $html;
 
+			$tag = (!$this->pro && !empty($attr['chld_tag']))?sanitize_html_class($attr['chld_tag']):'li';
+			$debug = 'taxonomy:' . $attr['taxonomy'] . '|level:' . $attr['level'];
+			$html .= vsprintf(
+				'<'.$tag.' class="ahcm-meta screen-reader-text" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);" 
+					data-plugin="automatically-hierarchic-categories-in-menu" 
+					data-version="%s" 
+					data-theme="%s" 
+					data-theme-slug="%s" 
+					data-debug="%s">' . $credits_format . '</'.$tag.'>',
+				array_merge(
+					[
+						esc_attr($plugin_data['Version']),
+						esc_attr($theme_name),
+						esc_attr($theme_slug),
+						esc_attr($debug)
+					],
+					$credits_args
+				)
+			).($this->pro&&($pl==$pl2)?"\n<!-- pro error: ".($attr[0] ?? '')." != ".$this->get_current_domain()." -->":'');
+			return $html;
 		}
 		public function atakanau_category($array,$params=array(),$slug='',$parent=0,$level=0){
 			$html='';
