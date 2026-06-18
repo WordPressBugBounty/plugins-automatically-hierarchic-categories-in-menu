@@ -1,8 +1,9 @@
 === Automatically Hierarchic Categories in Menu ===
 Contributors: atakanau
+Author link: https://en.programs.com.tr
 Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
-Tested up to: 6.9
-Stable tag: 2.0.11
+Tested up to: 7.0
+Stable tag: 2.0.12
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 Donate link: https://buymeacoffee.com/atakanau
@@ -59,17 +60,16 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.11 =
-* (Minor) Source code upgraded for PHP 8.X
-* Modified: Info content
+= Version 2.0.12 =
+* Fixed: Server-side malware false positive flags by removing ASCII content
 * Tested up to:
-  * `6.9`
+  * `7.0`
 
 For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_source=wordpress.org&utm_medium=readme&utm_campaign=ahcim-plugin&utm_content=changelog-link#toc_ahcim-changelog).
 
 == Upgrade Notice ==
 
-= 2.0.11 =
+= 2.0.12 =
 * Warning: Starting with version 2.0.10, parameter values are escaped. This may affect your menu. If you experience issues, please report them on the support page for a solution.
 * Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
 * Info: Install the Lite Extension for full compatibility with upcoming features. Optional but suggested.
