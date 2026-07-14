@@ -3,7 +3,7 @@ Contributors: atakanau
 Author link: https://en.programs.com.tr
 Tags: category menu, menu, navigation, woocommerce category, woocommerce menu
 Tested up to: 7.0
-Stable tag: 2.0.12
+Stable tag: 2.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0-standalone.html
 Donate link: https://buymeacoffee.com/atakanau
@@ -11,8 +11,6 @@ Donate link: https://buymeacoffee.com/atakanau
 Allows you to automatically add hierarchic categories in WordPress Navigation Menus.
 
 == Description ==
-Warning: After updating from pre-2.0.7 to the lastest version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
-
 Allows you to automatically / dynamically add hierarchical categories ( with sub-categories ) to WordPress navigation menus using shortcode.
 
 HTML and CSS knowledge may be required depending on the theme.
@@ -60,18 +58,16 @@ https://www.youtube.com/watch?v=kcRMB2sS1tk
 
 == Changelog ==
 
-= Version 2.0.12 =
-* Fixed: Server-side malware false positive flags by removing ASCII content
-* Tested up to:
-  * `7.0`
+= Version 2.1.0 =
+* Added: Automatic detection and integration with the Lite Extension.
+* Moved: WooCommerce Product Category support to the Lite Extension
+* Updated: Admin notices and taxonomy information
 
 For the changelog of earlier versions, please refer to [changelog section on blog](https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html?utm_source=wordpress.org&utm_medium=readme&utm_campaign=ahcim-plugin&utm_content=changelog-link#toc_ahcim-changelog).
 
 == Upgrade Notice ==
 
-= 2.0.12 =
-* Warning: Starting with version 2.0.10, parameter values are escaped. This may affect your menu. If you experience issues, please report them on the support page for a solution.
-* Warning: After updating from pre-2.0.7 to the current version, the plugin cannot reactivate itself. Please reactivate the plugin manually.
+= 2.1.0 =
 * Info: Install the Lite Extension for full compatibility with upcoming features. Optional but suggested.
 * Info: If you like the plugin, please make a donation.
 

@@ -3,7 +3,7 @@
  * Plugin Name: Automatically Hierarchic Categories in Menu
  * Plugin URI: https://atakanau.blogspot.com/2021/01/automatic-category-menu-wp-plugin.html
  * Description: Allows you to automatically add hierarchic categories in WordPress Navigation Menus.
- * Version: 2.0.12
+ * Version: 2.1.0
  * Requires at least: 5.0.2
  * Requires PHP: 5.6
  * Author: Atakan Au
@@ -58,7 +58,7 @@ if ( ! defined( 'AUTO_H_CATEGORY_MENU_RES' ) ) {
 	 *
 	 * @since 1.0
 	 */
-	define( 'AUTO_H_CATEGORY_MENU_RES', "2.0.12" );
+	define( 'AUTO_H_CATEGORY_MENU_RES', "2.1.0" );
 }
 if ( ! defined( 'AUTO_H_CATEGORY_MENU_SUPPORT_LINK' ) ) {
 	/**

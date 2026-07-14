@@ -55,8 +55,11 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 			// Hook to display the Lite Extension admin notice.
 			add_action( 'admin_notices', array( $this, 'aau_ahcm_display_lite_extension_notice' ) );
 
+			// Hook to handle the dismissal of the Lite Extension admin notice.
+			add_action( 'wp_ajax_aau_ahcm_dismiss_lite_notice', array( $this, 'aau_ahcm_dismiss_lite_notice' ) );
+
 			global $wp_version;
-			if (version_compare($wp_version, implode('.', [7, 0]), '>')) {
+			if (version_compare($wp_version, implode('.', [7, 4]), '>')) {
 				add_action('admin_notices', [$this, 'unsupported_v_notice']);
 				return;
 			}
@@ -75,9 +78,6 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu_Admin' ) && class_exists( 'Auto_Hie
 
 			// Hijack the ajax_add_menu_item function in order to save Shortcode menu item properly.
 			add_action( 'wp_ajax_add-menu-item', array( $this, 'ajax_add_menu_item' ), 0 );
-
-			// Hook to handle the dismissal of the Lite Extension admin notice.
-			add_action( 'wp_ajax_aau_ahcm_dismiss_lite_notice', array( $this, 'aau_ahcm_dismiss_lite_notice' ) );
 
 			// Include Paid Pro features if exists
 			if ( class_exists( 'Auto_Hierarchic_Category_Menu_Pro' ) ) {
@@ -396,9 +396,18 @@ if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
 		<small>
 		<p>
 		<?php
-		foreach($taxonomies as $taxonomy){?><?php
-			echo esc_attr( ($taxonomy) . ($taxonomy=='category'?' — '.__('Default Data','automatically-hierarchic-categories-in-menu'):($taxonomy=='product_cat'?'':' — '.'Pro') ) );
-			?><br/><?php
+		$lite_url = $this->get_utm_link( 'https://buymeacoffee.com/atakanau/ahc-lite-extension-v1-0-0', 'settings', 'ahcim', 'taxonomy-lite' );
+		$pro_url = $this->get_utm_link( AUTO_H_CATEGORY_MENU_SUPPORT_LINK, 'settings', 'ahcim', 'taxonomy-pro' );
+		foreach ( $taxonomies as $taxonomy ) {
+			echo $taxonomy === 'category'
+				? esc_html( $taxonomy . ' — ' . __( 'Default Data', 'automatically-hierarchic-categories-in-menu' ) )
+				: sprintf(
+					'%s — <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+					esc_html( $taxonomy ),
+					esc_url( $taxonomy === 'product_cat' ? $lite_url : $pro_url ),
+					$taxonomy === 'product_cat' ? __( 'Lite', 'automatically-hierarchic-categories-in-menu' ) : __( 'Pro', 'automatically-hierarchic-categories-in-menu' )
+				);
+			echo '<br>';
 		}
 		?>
 		</p>
@@ -468,8 +477,8 @@ if ( ! empty($taxonomies) ) : sort($taxonomies) ?>
 				<p>
 					<?php
 					printf(
-						/* translators: %s: URL to download the helper plugin */
-						wp_kses_post( __( '<strong>Preparation for upcoming version:</strong> To ensure a smooth transition and maintain full functionality in the next update, we recommend installing the <a href="%s" target="_blank" rel="noopener noreferrer">Automatically Hierarchic Categories - Lite Extension</a>. This is an optional but recommended step.', 'automatically-hierarchic-categories-in-menu' ) ),
+						/* translators: %s: URL to download the Lite Extension */
+						wp_kses_post( __( '<strong>Optional extension available:</strong> WooCommerce Product Category support is now available through the <a href="%s" target="_blank" rel="noopener noreferrer">Automatically Hierarchic Categories – Lite Extension</a>. Install it if you want to automatically include WooCommerce product categories in your menus.', 'automatically-hierarchic-categories-in-menu' ) ),
 						esc_url( $download_url )
 					);
 					?>

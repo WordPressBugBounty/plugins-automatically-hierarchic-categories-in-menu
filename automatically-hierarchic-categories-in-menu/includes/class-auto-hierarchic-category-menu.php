@@ -230,13 +230,28 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 				);
 			$pl = count($default_params);
 			
-			// Include Paid Pro features if exists
-			if ( gettype($this->pro) == "boolean" && class_exists( 'Auto_Hierarchic_Category_Menu_Pro' ) ) {
-				$this->pro = new Auto_Hierarchic_Category_Menu_Pro();
+			// Status Detection
+			$is_pro = ( is_object($this->pro) || class_exists( 'Auto_Hierarchic_Category_Menu_Pro' ) );
+			$is_lite = class_exists( 'Auto_Hierarchic_Category_Menu_Lite' );
+
+			// Priority Handling
+			if ( $is_pro ) {
+				$is_lite = false;
+				if ( gettype($this->pro) == "boolean" ) {
+					$this->pro = new Auto_Hierarchic_Category_Menu_Pro();
+				}
 			}
 
-			if($this->pro)
+			$lite_instance = null;
+			if ( $is_lite ) {
+				$lite_instance = new Auto_Hierarchic_Category_Menu_Lite();
+			}
+
+			// Pro Integration: Extend defaults
+			if ( $is_pro && is_object($this->pro) && is_callable([$this->pro, 'extent_defaults']) ) {
 				$default_params = $this->pro->extent_defaults($default_params);
+			}
+
 			$attr = shortcode_atts($default_params,$attr);
 
 			if($attr['a_cls']){
@@ -249,26 +264,47 @@ if ( ! class_exists( 'Auto_Hie_Category_Menu' ) ) {
 			if($attr['exclude'])
 				$attr['exclude']=explode(',',$attr['exclude']);
 
-			$link_sub='';
-			if($attr['taxonomy']=='category'){
-				$category_base=get_option('category_base');
-				$link_sub='/'.($category_base?$category_base:'category');
+			// Taxonomy Validation
+			$taxonomy = $attr['taxonomy'] ?? 'category';
+			if ( $taxonomy === 'category' ) {
+				// Always allow
+			} elseif ( $taxonomy === 'product_cat' ) {
+				if ( ! $is_pro && ! $is_lite ) {
+					$attr['taxonomy'] = false;
+				}
+			} else {
+				if ( ! $is_pro ) {
+					$attr['taxonomy'] = false;
+				}
 			}
-			elseif($attr['taxonomy']=='product_cat'){
-				$wc_options = get_option('woocommerce_permalinks');
-				$link_sub='/'.($wc_options['category_base']??'');
+
+			if ( $attr['taxonomy'] === false ) {
+				return ''; // Stop execution safely
 			}
-			elseif($this->pro){
-				$link_sub = $this->pro->get_link_sub($attr);
+
+			// Dynamic Permalink Resolution
+			$link_sub = '';
+			if ( $attr['taxonomy'] === 'category' ) {
+				$category_base = get_option('category_base');
+				$link_sub = '/' . ( $category_base ? $category_base : 'category' );
+			} elseif ( $attr['taxonomy'] === 'product_cat' ) {
+				if ( $is_pro && is_object($this->pro) && is_callable([$this->pro, 'get_link_sub']) ) {
+					$link_sub = $this->pro->get_link_sub($attr);
+				} elseif ( $is_lite && is_object($lite_instance) && is_callable([$lite_instance, 'get_link_sub']) ) {
+					$link_sub = $lite_instance->get_link_sub($attr);
+				}
+			} elseif ( $attr['taxonomy'] !== false ) {
+				if ( $is_pro && is_object($this->pro) && is_callable([$this->pro, 'get_link_sub']) ) {
+					$link_sub = $this->pro->get_link_sub($attr);
+				}
 			}
-			else{
-				$attr['taxonomy'] = false;
-			}
+
 			$categories = get_categories(array(
 				'taxonomy' => $attr['taxonomy']
 				,'hide_empty' => $attr['hide_empty']
 			));
-			if( $pl < ($pl2 = count($default_params)-1) && $this->pro ){
+
+			if( $pl < ($pl2 = count($default_params)-1) && $is_pro && is_object($this->pro) ){
 				if( is_callable([$this->pro, 'get_html']))
 					$html=$this->pro->get_html($attr,$link_sub);
 				else if(!empty($attr['fn_custom']) && is_callable([$this->pro, 'fn_custom_'.$attr['fn_custom']]))
